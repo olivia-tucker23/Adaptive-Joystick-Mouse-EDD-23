@@ -17,14 +17,11 @@ pot_min = 0.00
 pot_max = 3.29
 step = (pot_max - pot_min) / 20.0
 
-
 def get_voltage(pin):
     return (pin.value * 3.3) / 65536
 
-
 def steps(axis):
     return round((axis - pot_min) / step)
-
 
 scale = 8
 
@@ -42,8 +39,6 @@ y_average = (y_start1 + y_start2 + y_start3) / 3
 
 x_origin = int(x_average)
 y_origin = int(y_average)
-
-# x_offset =
 
 BUFFER_SIZE = 5
 x_buffer = [0] * BUFFER_SIZE
@@ -70,8 +65,6 @@ while True:
     print("intx: ", intx)
     print("raw y-value: ", y)
     print("inty: ", inty, "\n")
-    # print('x_origin: ', x_origin)
-    # print('y_origin: ', y_origin, '\n')
 
     mouse.move(average_x, inty)
 
