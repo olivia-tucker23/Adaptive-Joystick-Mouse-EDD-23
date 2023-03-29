@@ -9,9 +9,9 @@ mouse = Mouse(usb_hid.devices)
 
 x_axis = analogio.AnalogIn(board.A0)
 y_axis = analogio.AnalogIn(board.A1)
-select = digitalio.DigitalInOut(board.A2)
-select.direction = digitalio.Direction.INPUT
-select.pull = digitalio.Pull.UP
+joystick_click = digitalio.DigitalInOut(board.A2)
+joystick_click.direction = digitalio.Direction.INPUT
+joystick_click.pull = digitalio.Pull.UP
 
 pot_min = 0.00
 pot_max = 3.29
@@ -44,6 +44,9 @@ BUFFER_SIZE = 5
 x_buffer = [0] * BUFFER_SIZE
 y_buffer = [0] * BUFFER_SIZE
 
+left_click = digitalio.DigitalInOut(board.D4)
+right_click = digitalio.DigitalInOut(board.D5)
+
 while True:
     y = get_voltage(x_axis)
     x = get_voltage(y_axis)
@@ -61,18 +64,33 @@ while True:
     average_x = int(sum(x_buffer) / BUFFER_SIZE)
     average_y = int(sum(y_buffer) / BUFFER_SIZE)
 
-    print("raw x-value: ", x)
-    print("intx: ", intx)
-    print("raw y-value: ", y)
-    print("inty: ", inty, "\n")
+    # print("raw x-value: ", x)
+    # print("intx: ", intx)
+    # print("raw y-value: ", y)
+    # print("inty: ", inty, "\n")
 
     mouse.move(average_x, inty)
 
-    if select.value is False:
-        mouse.press(Mouse.LEFT_BUTTON)
-        time.sleep(0.02)
-    if select.value is True:
+    # if joystick_click.value is False:
+    #     mouse.press(Mouse.LEFT_BUTTON)
+    #     time.sleep(0.02)
+    # if joystick_click.value is True:
+    #     mouse.release(Mouse.LEFT_BUTTON)
+    #     time.sleep(0.02)
+    
+    if left_click.value is False:
         mouse.release(Mouse.LEFT_BUTTON)
         time.sleep(0.02)
+    if left_click.value is True:
+        mouse.press(Mouse.LEFT_BUTTON)
+    
+    if right_click.value is False:
+        mouse.release(Mouse.RIGHT_BUTTON)
+        time.sleep(0.02)
+    if right_click.value is True:
+        mouse.press(Mouse.RIGHT_BUTTON)
+
+    # print("Left click pressed?  ", left_click.value)
+    # print("Right click pressed? ", right_click.value)
 
     time.sleep(0.005)
