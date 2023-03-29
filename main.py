@@ -4,6 +4,7 @@ import board
 import digitalio
 import usb_hid
 from adafruit_hid.mouse import Mouse
+from digitalio import Pull
 
 mouse = Mouse(usb_hid.devices)
 
@@ -23,7 +24,7 @@ def get_voltage(pin):
 def steps(axis):
     return round((axis - pot_min) / step)
 
-scale = 8
+scale = 10
 
 y_start1 = get_voltage(x_axis) * scale
 x_start1 = get_voltage(y_axis) * scale
@@ -45,7 +46,9 @@ x_buffer = [0] * BUFFER_SIZE
 y_buffer = [0] * BUFFER_SIZE
 
 left_click = digitalio.DigitalInOut(board.D4)
+left_click.pull = Pull.DOWN
 right_click = digitalio.DigitalInOut(board.D5)
+right_click.pull = Pull.DOWN
 
 while True:
     y = get_voltage(x_axis)
